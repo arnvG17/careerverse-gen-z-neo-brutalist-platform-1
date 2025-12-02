@@ -37,6 +37,40 @@
 | **10. Use Cases** | Best for large tables with frequent searches. | Suitable only for small tables or rarely accessed data. |
 
 
+| **Point of Difference**        | **Hashing**                         | **B-Tree / B+ Tree Indexing**                | **Bitmap Indexing**                                     |
+| ------------------------------ | ----------------------------------- | -------------------------------------------- | ------------------------------------------------------- |
+| **1. Purpose**                 | Fast equality search                | Fast equality + range search                 | Efficient filtering on low-cardinality columns          |
+| **2. Data Structure**          | Hash table with buckets             | Balanced tree (B/B+ tree)                    | Bit arrays (bitmaps)                                    |
+| **3. Ordering of Keys**        | ❌ No order                          | ✔ Ordered                                    | ✔ Binary representation but not sorted values           |
+| **4. Best For**                | Exact match lookups (`=`)           | Ordered queries (`<`, `>`, `BETWEEN`)        | Columns with few distinct values (e.g., gender, status) |
+| **5. Search Complexity**       | **O(1)** average                    | **O(log n)**                                 | Very fast bitwise operations                            |
+| **6. Supports Range Queries?** | ❌ No                                | ✔ Yes                                        | ❌ Not efficient for ranges                              |
+| **7. Space Usage**             | Medium (buckets + overflow)         | Medium (tree nodes)                          | Can be **very small** if low cardinality                |
+| **8. Query Performance**       | Excellent for equality              | Excellent for most queries (general purpose) | Excellent for AND/OR/NOT filtering                      |
+| **9. Handles Duplicates**      | Yes, but collisions complicate      | Yes                                          | Very efficient (bit vectors per value)                  |
+| **10. Suitable Data Types**    | High-cardinality keys (ID, Roll_No) | Almost all data types                        | Boolean, category, gender, status columns               |
+| **11. Insert/Update Cost**     | May cause collisions, overflow      | Tree rebalancing needed                      | High cost (bitmap must be updated)                      |
+| **12. Range Scan**             | ❌ Impossible                        | ✔ Fully supported                            | ❌ Not suitable                                          |
+| **13. Use in Data Warehouses** | Rare                                | Common                                       | **Very common** (OLAP queries)                          |
+| **14. Example**                | `hash(emp_id)` → bucket             | B+ tree index on salary                      | Bitmap index on gender: M/F                             |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 **2PhaseLocking**
 Below is a **perfect, full-length 10-MARK answer**, written in clean exam language, fully detailed, with bolded keywords and clear structure — exactly what evaluators look for for a theory question on **Two-Phase Locking (2PL)**.
