@@ -176,3 +176,212 @@ Two-Phase Locking (2PL) is a fundamental concurrency control protocol that ensur
 However, despite its advantages, 2PL suffers from drawbacks such as **deadlock formation** and **reduced concurrency**, which must be managed using techniques like deadlock detection, timeout, or stricter variants of 2PL.
 
 
+**NORMALISATION**
+Below is the **complete, exam-style theory list** of **all anomalies** related to **2NF and 3NF**, plus **all types of anomalies in general**.
+This is written in clean, bullet-pointed, 10-mark-answer format.
+
+---
+
+# ⭐ **ALL DATABASE ANOMALIES (FULL LIST – THEORY)**
+
+Database anomalies occur when a relation is **not normalized** properly.
+These anomalies are mainly seen in tables **not in 2NF or 3NF**.
+
+There are **three classical anomalies**:
+
+---
+
+# ✅ **1. INSERTION ANOMALY**
+
+Occurs when **certain data cannot be inserted** into a table **unless some other unrelated data is also provided**.
+
+### Examples:
+
+* Cannot insert a new course unless a student enrolls in it.
+* Cannot insert a new supplier unless a product exists.
+
+**Cause:**
+Partial dependencies (violates 2NF) or transitive dependencies (violates 3NF) force unrelated attributes into the same table.
+
+---
+
+# ✅ **2. UPDATE ANOMALY**
+
+Occurs when the **same piece of information is stored in multiple rows**, and updating one row requires updating all copies.
+
+### Examples:
+
+* Changing the Instructor_Name requires updating every tuple where the instructor teaches.
+* Changing Department_Name requires updating all employees in that department.
+
+**Cause:**
+Data redundancy due to partial or transitive dependencies.
+
+**Risk:**
+Leads to **inconsistent data** if some rows are not updated.
+
+---
+
+# ✅ **3. DELETION ANOMALY**
+
+Occurs when **deleting one piece of information** causes **unintended loss** of other important facts.
+
+### Examples:
+
+* Deleting a student’s enrollment record may delete the only tuple holding the course description.
+* Deleting an employee may delete data about the department if that employee was the only one recorded in that department.
+
+**Cause:**
+Multiple unrelated entities stored in a single table → dependent on one another.
+
+---
+
+# ⭐ SUMMARY OF GENERAL ANOMALIES
+
+| Anomaly       | What Happens?                                   | Why It Happens?                       |
+| ------------- | ----------------------------------------------- | ------------------------------------- |
+| **Insertion** | Cannot insert data without extra unrelated data | Redundancy / poor structure           |
+| **Update**    | Must update several rows for one change         | Redundant attributes                  |
+| **Deletion**  | Deleting a row deletes other info               | Attributes that don’t belong together |
+
+---
+
+# ⭐ **ANOMALIES IN 2NF (Partial Dependency Problems)**
+
+A relation is in **2NF** only if:
+
+* It is in 1NF
+* **No non-prime attribute is partially dependent on a candidate key**
+
+### If not in 2NF → PARTIAL DEPENDENCY ANOMALIES occur:
+
+### 🔥 Problems in tables NOT in 2NF:
+
+### 1. **Redundant storage**
+
+Non-key attributes depend on **part** of composite key → repeated many times.
+
+### 2. **Update anomaly**
+
+Updating a partial-key-dependent attribute requires updating several rows.
+
+### 3. **Insertion anomaly**
+
+You cannot insert attribute values dependent on part of the key unless the whole composite key exists.
+
+### 4. **Deletion anomaly**
+
+Deleting a record may delete all information about partially dependent attributes.
+
+---
+
+# ⭐ **ANOMALIES IN 3NF (Transitive Dependency Problems)**
+
+A relation is in **3NF** only if:
+
+* It is in 2NF
+* **No transitive dependencies exist** (A→B and B→C causing A→C)
+
+### If not in 3NF → TRANSITIVE DEPENDENCY ANOMALIES occur:
+
+### 🔥 Problems in tables NOT in 3NF:
+
+### 1. **Extensive redundancy**
+
+Attributes like Instructor_Name, Dept_Location stored repeatedly.
+
+### 2. **Update anomaly**
+
+Updating a non-key attribute (like Dept_Location) requires updating multiple rows.
+
+### 3. **Insertion anomaly**
+
+Cannot insert Dept_Name → Dept_Location unless an employee row exists.
+
+### 4. **Deletion anomaly**
+
+Deleting employee tuple deletes department info.
+
+### 5. **Risk of inconsistent data**
+
+Because transitive dependencies allow multiple stored values for the same fact.
+
+---
+
+# ⭐ COMPLETE THEORY LIST: TYPES OF DEPENDENCY-RELATED ANOMALIES
+
+### 🔹 **1. Partial Dependency Anomalies**
+
+Arise when:
+
+* part of a composite key determines a non-key attribute
+* violates 2NF
+
+### 🔹 **2. Transitive Dependency Anomalies**
+
+Arise when:
+
+* non-key attribute depends on another non-key attribute
+* violates 3NF
+
+### 🔹 **3. Insert/Delete/Update Anomalies** (core anomalies)
+
+As explained above.
+
+### 🔹 **4. Redundancy anomalies**
+
+Repeated storage consumes extra space.
+
+### 🔹 **5. Inconsistency anomalies**
+
+Different rows may hold different values for the same fact.
+
+---
+
+# ⭐ **BONUS: Higher Normal Form Anomalies**
+
+### 🔷 Dependency Preservation Problem (BCNF)
+
+BCNF removes anomalies but may break dependency preservation.
+
+### 🔷 Lossless Join Requirement
+
+Decomposing wrongly may lead to losing information when joining.
+
+### 🔷 Multi-valued Dependency Anomalies (4NF)
+
+Attributes with independent multi-valued relationships cause cartesian product explosion.
+
+### 🔷 Join Dependency Anomalies (5NF)
+
+When relation can be reconstructed only via complex joins.
+
+---
+
+# ⭐ FINAL ONE-PAGE CHEATSHEET (Exam Perfect)**
+
+### **ANOMALIES**
+
+1. **Insertion anomaly**
+2. **Update anomaly**
+3. **Deletion anomaly**
+
+### **WHY THEY OCCUR**
+
+* **2NF violation:** partial dependency
+* **3NF violation:** transitive dependency
+
+### **2NF Anomaly Sources**
+
+* Non-key attribute depends on part of composite key.
+
+### **3NF Anomaly Sources**
+
+* Non-key attribute depends on another non-key attribute.
+
+---
+
+
+
+
+
